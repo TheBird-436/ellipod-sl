@@ -1,0 +1,534 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ellipod SL</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div id="toast"></div>
+
+  <div id="authScreen">
+    <div class="auth-box">
+      <div class="auth-logo">Ell<span>i</span>pod S<span>L</span></div>
+      <div class="auth-tagline">Your personal school command center.</div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabSignup">Sign Up</button>
+        <button class="auth-tab" id="tabLogin">Log In</button>
+      </div>
+      
+      <div class="auth-panel" id="panelSignup">
+        <input class="auth-input" id="suName" placeholder="Your first name" maxlength="24" />
+        <input class="auth-input" id="suEmail" type="email" placeholder="Email address" />
+        <input class="auth-input" id="suPass" type="password" placeholder="Password (min 6 chars)" />
+        <input class="auth-input" id="suPassConfirm" type="password" placeholder="Confirm password" />
+        <button class="auth-btn" id="signupBtn">Create account →</button>
+        <div class="auth-small">Your data is stored locally in this browser. No cloud needed yet.
+        </div>
+      </div>
+      
+      <div class="auth-panel" id="panelLogin" style="display:none">
+        <input class="auth-input" id="liEmail" type="email" placeholder="Email address" />
+        <input class="auth-input" id="liPass" type="password" placeholder="Password" />
+        <button class="auth-btn" id="loginBtn">Log In →</button>
+        <div class="auth-forgot" id="forgotLink">Forgot password?</div>
+        <div class="auth-small">No account? <span class="auth-link" id="goSignup">Sign up free</span>
+          
+        </div>
+        <div class="auth-small" style="margin-top:6px">New device? <span class="auth-link" id="goTransfer">Transfer account →</span>
+          
+        </div>
+      </div>
+      
+      <div class="auth-panel" id="panelForgot" style="display:none">
+        <div style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;line-height:1.5">
+          Enter your email to receive a reset link. <em>(Demo only)</em>
+        </div>
+        <input class="auth-input" id="forgotEmail" type="email" placeholder="Your email address" />
+        <button class="auth-btn" id="forgotBtn">Send reset link →</button>
+        <div class="auth-small"><span class="auth-link" id="backToLogin">← Back to login</span>
+          
+        </div>
+      </div>
+      
+      <div class="auth-panel" id="panelTransfer" style="display:none">
+        <div class="transfer-info">
+          <div style="font-size:1.5rem;margin-bottom:8px">📦
+          </div>
+          <div style="font-size:0.86rem;font-weight:600;margin-bottom:6px">Transfer your account
+          </div>
+          <div style="font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:1rem">
+            Ellipod SL stores data locally in each browser. To use your account on another device,
+            export it from your original browser and import it here.
+          </div>
+        </div>
+        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px;text-align:left">
+          Import account file
+        </div>
+        <label class="import-label" id="importLabel">
+          <span id="importLabelText">📂 Choose export file (.json)</span>
+          <input type="file" id="importFile" accept=".json" style="display:none" />
+        </label>
+        <button class="auth-btn" id="importBtn" style="margin-top:4px">Import & Log In →</button>
+        <div class="auth-small" style="margin-top:8px">
+          <span class="auth-link" id="backFromTransfer">← Back to login</span>
+        </div>
+      </div>
+
+      <div id="authError" class="auth-error" style="display:none"></div>
+    </div>
+  </div>
+
+  <nav id="mainNav" style="display:none">
+    <div class="logo">Ell<span>i</span>pod S<span>L</span></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-page="today">Today</button>
+      <button class="nav-tab" data-page="focus">Focus</button>
+      <button class="nav-tab" data-page="habits">Habits</button>
+      <button class="nav-tab" data-page="pro">About Ellipod SL</button>
+    </div>
+    <div class="nav-right">
+      <div class="nav-pill pill-streak" id="navStreak">🔥 0
+      </div>
+      <div class="nav-pill pill-xp" id="navXP">⚡ 0 XP
+      </div>
+      <button class="nav-settings-btn" id="navSettingsBtn" title="Settings">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/GNOME_Settings_icon.svg/500px-GNOME_Settings_icon.svg.png" alt="Settings" class="settings-icon-img">
+      </button>
+    </div>
+  </nav>
+
+  <main id="mainApp" style="display:none">
+
+    <div class="page active" id="page-today">
+      <div id="hook" style="display:none">
+        <div id="hookIcon" style="font-size:1.4rem;flex-shrink:0">🔥</div>
+        <div>
+          <div class="hook-title" id="hookTitle"></div>
+          <div class="hook-sub" id="hookSub"></div>
+        </div>
+      </div>
+      <div class="missions" id="missionsEl"></div>
+      <div class="hero">
+        <div class="hero-left">
+          <div class="date" id="heroDate"></div>
+          <div class="greeting">Hello <span id="heroName">Student</span>, What's on <span>your schedule</span> today?</div>
+        </div>
+        <div class="hero-stats">
+          <div class="hstat"><div class="hstat-v g" id="statDone">0</div><div class="hstat-l">Done</div></div>
+          <div class="hstat"><div class="hstat-v r" id="statPending">0</div><div class="hstat-l">Pending</div></div>
+          <div class="hstat"><div class="hstat-v a" id="statStreak">0</div><div class="hstat-l">Streak</div></div>
+        </div>
+      </div>
+      <div id="danger-banner"><span>🚨</span><span id="dangerText"></span></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-hd"><div class="card-ttl">Homework</div><div class="dot dot-p"></div></div>
+          <div class="add-row">
+            <input type="text" id="hwText" placeholder="Assignment name..." />
+            <select id="hwSubject">
+              <option value="Math">Math</option>
+              <option value="Science">Science</option>
+              <option value="English">English</option>
+              <option value="History">History</option>
+              <option value="Physics">Physics</option>
+              <option value="CS">CS</option>
+              <option value="Other">Other</option>
+            </select>
+            <select id="hwDue">
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="thisweek">This week</option>
+            </select>
+            <button class="btn btn-p btn-sm" id="hwAddBtn">+ Add</button>
+          </div>
+          <div id="hwList"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-ttl">Today's Schedule</div><div class="dot dot-g"></div></div>
+          <div class="sched-form">
+            <input type="time" id="schedTime" />
+            <input type="text" id="schedName" placeholder="Class name" />
+            <input type="text" id="schedRoom" class="sched-room-input" placeholder="Room" />
+            <button class="btn btn-p btn-sm" id="schedAddBtn">+ Add</button>
+          </div>
+          <div id="schedList"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:1.4rem">
+        <div class="card-hd"><div class="card-ttl">Grade Tracker</div><div class="dot dot-a"></div></div>
+        <div class="grade-add-row">
+          <input type="text" id="gradeSubject" placeholder="Subject" />
+          <input type="number" id="gradeScore" placeholder="Grade %" min="0" max="100" />
+          <button class="btn btn-p btn-sm" id="gradeAddBtn">+ Add</button>
+        </div>
+        <div id="gradeList"></div>
+        <div class="ai-insight" id="gradeInsight" style="display:none">
+          <span>🤖</span><span id="gradeInsightText"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-focus">
+      <div class="sec-head">
+        <h2>Focus 😣</h2>
+        <p>Turn study sessions into a game. Earn XP, level up, unlock planets.</p>
+      </div>
+      <div class="grid2">
+        <div>
+          <div class="focus-arena">
+            <div class="planet" id="focusPlanet">🌍</div>
+            <div class="timer" id="timerDisplay">25:00</div>
+            <div class="timer-label" id="timerLabel">READY TO FOCUS</div>
+            <div class="dur-row">
+              <button class="dur-btn on" data-min="25">25 min</button>
+              <button class="dur-btn" data-min="50">50 min</button>
+              <button class="dur-btn" data-min="90">90 min</button>
+              <button class="dur-btn" data-min="1">1 min test</button>
+            </div>
+            <div class="focus-btns">
+              <button class="fbtn fbtn-go" id="timerBtn">▶ Start Focus</button>
+              <button class="fbtn fbtn-rst" id="timerReset">↺ Reset</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><div class="card-ttl">XP Progress</div><div class="dot dot-a"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.76rem;margin-bottom:5px;color:var(--muted)">
+              <span>Level <b id="lvlNum" style="color:var(--accent)">1</b></span>
+              <span><b id="xpCur" style="color:var(--accent4)">0</b> / <span id="xpMax">100</span> XP</span>
+            </div>
+            <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBar" style="width:0%"></div></div>
+            <div style="margin-top:.8rem">
+              <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Planets unlocked</div>
+              <div style="font-size:1.25rem;display:flex;gap:5px" id="planetsRow">🌍</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:1.4rem">
+            <div class="card-hd"><div class="card-ttl">Streak</div><div class="dot dot-pk"></div></div>
+            <div class="streak-big cold" id="streakBig">0</div>
+            <div class="streak-label">day streak</div>
+            <div class="streak-pill sp-safe" id="streakPill">Complete a session to start your streak</div>
+            <div class="week-dots" id="weekDots"></div>
+            <div style="margin-top:9px;font-size:0.76rem;color:var(--muted);text-align:center">
+              Sessions this week: <b id="weekSessions" style="color:var(--text)">0</b>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><div class="card-ttl">Session Log</div><div class="dot dot-g"></div></div>
+            <div style="display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto" id="sessionLog">
+              <div class="empty"><div class="empty-icon">⏱</div>Complete a session to see it here</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-habits">
+      <div class="sec-head">
+        <h2>Life Tracker 🌍</h2>
+        <p>Small daily actions. Massive long-term results.</p>
+      </div>
+      <div class="grid2">
+        <div>
+          <div class="card">
+            <div class="card-hd"><div class="card-ttl">Daily Habits</div><div class="dot dot-g"></div></div>
+            <div id="habitList"></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-hd"><div class="card-ttl">Weekly Report</div><div class="dot dot-a"></div></div>
+            <div class="report-box">
+              <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px">This week</div>
+              <div class="report-grid">
+                <div><div class="report-val" id="repCompletion" style="color:var(--accent)">0%</div><div class="report-lbl">Completion</div></div>
+                <div><div class="report-val" id="repBest" style="color:var(--accent3)">—</div><div class="report-lbl">Best habit</div></div>
+                <div><div class="report-val" id="repTopStreak" style="color:var(--accent4)">0</div><div class="report-lbl">Top streak</div></div>
+              </div>
+            </div>
+            <div class="ai-insight" style="margin-top:.9rem">
+              <span>🤖</span><span id="habitInsightText">Track habits for a few days to get personalized insights.</span>
+            </div>
+          </div>
+          <div class="card" style="margin-top:1.3rem">
+            <div class="card-hd"><div class="card-ttl">Daily Motivation</div><div class="dot dot-pk"></div></div>
+            <div class="motivation-text" id="motivText"></div>
+            <button class="btn btn-p btn-sm" id="newQuoteBtn">New quote →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-pro">
+  <div class="pro-hero">
+    <div class="pro-hero-left">
+      <div class="pro-hero-eyebrow">by Ellipod</div>
+      <div class="pro-hero-title">About <span>Ell</span>i<span>pod</span> <span>S</span>L</div>    
+    </div>
+  </div>
+
+  <div class="pro-features-grid">
+    <!-- Card 1 -->
+    <div class="pro-card">
+      <div class="pro-card-top">
+        <div class="pro-card-icon">ℹ</div>
+        <div class="pro-badge-pill">Overview</div>
+      </div>
+      <div class="pro-card-title">Ellipod SL is an educational software platform that combines essential learning tools in one intuitive environment, helping students and educators access resources and manage content. Ellipod (the company) owns Ellipod SL</div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="pro-card">
+      <div class="pro-card-top">
+        <div class="pro-card-icon">ℹ</div>
+        <div class="pro-badge-pill">Classroom</div>
+      </div>
+      <div class="pro-card-title">The platform offers tools for organizing courses, sharing educational materials, and improving communication between students and educators. Its structured design simplifies learning management and creates a more efficient digital classroom experience.</div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="pro-card">
+      <div class="pro-card-top">
+        <div class="pro-card-icon">ℹ</div>
+        <div class="pro-badge-pill">Impact</div>
+      </div>
+      <div class="pro-card-title">By bringing educational processes into a single platform, Ellipod SL supports better collaboration, accessibility, and engagement, enabling a smoother and more effective learning experience for all users.</div>
+    </div>
+
+    
+
+  </div>
+</div>
+    
+    <div class="page" id="page-settings">
+      <div class="settings-layout">
+        <div class="settings-sidebar">
+          <div class="settings-sidebar-title">Settings</div>
+          <button class="stab active" data-stab="profile">👤 Profile</button>
+          <button class="stab" data-stab="appearance">🎨 Appearance</button>
+          <button class="stab" data-stab="privacy">🛡️ Privacy</button>
+          <button class="stab" data-stab="account">🔐 Account</button>
+          <button class="stab" data-stab="advanced">⚙️ Advanced</button>
+          <button class="stab stab-danger" data-stab="danger">⚠️ Danger Zone</button>
+        </div>
+        <div class="settings-panels">
+
+          <div class="spanel active" id="spanel-profile">
+            <div class="spanel-title">👤 Profile</div>
+            <div class="avatar-section">
+              <div class="avatar-display" id="avatarDisplay">🎓</div>
+              <div>
+                <div class="sfield-label" style="margin-bottom:8px">Choose Avatar</div>
+                <div class="avatar-grid" id="avatarGrid"></div>
+              </div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Display Name</div>
+              <div class="sfield-row">
+                <input type="text" id="settingName" placeholder="Your name" maxlength="24" />
+                <button class="btn btn-p btn-sm" id="saveNameBtn">Save</button>
+              </div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Username</div>
+              <div class="sfield-row">
+                <input type="text" id="settingUsername" placeholder="@username" maxlength="20" />
+                <button class="btn btn-p btn-sm" id="saveUsernameBtn">Save</button>
+              </div>
+              <div class="sfield-hint">You can change your username once every 30 days.</div>
+            </div>
+          </div>
+
+          <div class="spanel" id="spanel-appearance">
+            <div class="spanel-title">🎨 Appearance</div>
+            <div class="sfield">
+              <div class="sfield-label">Theme</div>
+              <div class="theme-options">
+                <div class="theme-opt" data-theme="dark"><div class="theme-preview dark-prev"></div><div class="theme-name">Dark</div></div>
+                <div class="theme-opt" data-theme="light"><div class="theme-preview light-prev"></div><div class="theme-name">Light</div></div>
+                <div class="theme-opt" data-theme="system"><div class="theme-preview system-prev"></div><div class="theme-name">System</div></div>
+              </div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Accent Color</div>
+              <div class="color-options" id="accentColors">
+                <div class="color-dot" data-color="#6c63ff" style="background:#6c63ff" title="Purple"></div>
+                <div class="color-dot" data-color="#00d9a3" style="background:#00d9a3" title="Green"></div>
+                <div class="color-dot" data-color="#ff6b9d" style="background:#ff6b9d" title="Pink"></div>
+                <div class="color-dot" data-color="#ffa94d" style="background:#ffa94d" title="Amber"></div>
+                <div class="color-dot" data-color="#38bdf8" style="background:#38bdf8" title="Blue"></div>
+                <div class="color-dot" data-color="#a78bfa" style="background:#a78bfa" title="Violet"></div>
+              </div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Font Size</div>
+              <div class="font-size-row">
+                <button class="fsz-btn" data-size="small">A<span>Small</span></button>
+                <button class="fsz-btn" data-size="medium">A<span>Medium</span></button>
+                <button class="fsz-btn" data-size="large">A<span>Large</span></button>
+              </div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Background</div>
+              <div class="bg-options" id="bgOptions">
+                <div class="bg-opt" data-bg="default">Default</div>
+                <div class="bg-opt" data-bg="midnight">Midnight</div>
+                <div class="bg-opt" data-bg="forest">Forest</div>
+                <div class="bg-opt" data-bg="ocean">Ocean</div>
+                <div class="bg-opt" data-bg="rose">Rose</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="spanel" id="spanel-privacy">
+            <div class="spanel-title">🛡️ Privacy</div>
+            <div class="sfield">
+              <div class="sfield-label">Who can see your profile</div>
+              <select id="privacyProfile" style="width:100%">
+                <option value="public">Everyone</option>
+                <option value="friends">Friends only</option>
+                <option value="private" selected>Only me</option>
+              </select>
+            </div>
+            <div class="sfield">
+              <div class="stoggle-row">
+                <div>
+                  <div class="sfield-label" style="margin-bottom:2px">Activity Status</div>
+                  <div class="sfield-hint" style="margin-top:0">Show when you were last active</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="privacyActivity" /><span class="toggle-track"></span></label>
+              </div>
+            </div>
+            <div class="sfield">
+              <div class="stoggle-row">
+                <div>
+                  <div class="sfield-label" style="margin-bottom:2px">Leaderboard Visibility</div>
+                  <div class="sfield-hint" style="margin-top:0">Appear in public leaderboards</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="privacyLeaderboard" /><span class="toggle-track"></span></label>
+              </div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Your Data</div>
+              <button class="btn btn-p btn-sm" id="downloadDataBtn">⬇ Download my data</button>
+              <div class="sfield-hint">Downloads a JSON file with all your Edu data.</div>
+            </div>
+          </div>
+
+          <div class="spanel" id="spanel-account">
+            <div class="spanel-title">🔐 Account</div>
+            <div class="account-user-card" id="accountUserCard">
+              <div class="account-avatar-sm" id="acctAvatar">🎓</div>
+              <di class="account-info">
+                <div class="account-name" id="acctName">Student</div>
+                <div class="account-email" id="acctEmail"></div>
+                </div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Change Password</div>
+              <input type="password" id="settingPwCurrent" placeholder="Current password" style="width:100%;margin-bottom:8px" />
+              <input type="password" id="settingPwNew" placeholder="New password (min 6 chars)" style="width:100%;margin-bottom:8px" />
+              <input type="password" id="settingPwConfirm" placeholder="Confirm new password" style="width:100%;margin-bottom:10px" />
+              <button class="btn btn-p btn-sm" id="savePwBtn">Update Password</button>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Use on Another Device</div>
+              <button class="btn btn-p btn-sm" id="exportAccountBtn">📦 Export account file</button>
+              <div class="sfield-hint">Download a file and import it on your other browser or device to log in there.</div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Session</div>
+              <button class="btn btn-sm" id="logoutBtn" style="background:rgba(255,71,87,0.1);color:var(--danger);border:1px solid rgba(255,71,87,0.25)">Log Out</button>
+              <div class="sfield-hint">You'll be returned to the login screen or you might have to restart the website/app. Your data is safely saved.</div>
+            </div>
+          </div>
+
+          <div class="spanel" id="spanel-advanced">
+            <div class="spanel-title">⚙️ Advanced</div>
+            <div class="sfield">
+              <div class="sfield-label">Notifications</div>
+              <div class="stoggle-row" style="margin-bottom:8px">
+                <div>
+                  <div style="font-size:0.86rem;font-weight:600">Streak reminders</div>
+                  <div class="sfield-hint" style="margin-top:2px">Alert before your streak breaks (8pm)</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="notifStreak" /><span class="toggle-track"></span></label>
+              </div>
+              <div class="stoggle-row">
+                <div>
+                  <div style="font-size:0.86rem;font-weight:600">Daily mission reminder</div>
+                  <div class="sfield-hint" style="margin-top:2px">Remind you to complete daily missions</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="notifMissions" /><span class="toggle-track"></span></label>
+              </div>
+            </div>
+            <div class="sfield">
+              <div class="sfield-label">Partial Resets</div>
+              <div class="reset-row">
+                <div>
+                  <div style="font-size:0.86rem;font-weight:600">Reset appearance</div>
+                  <div class="sfield-hint" style="margin-top:2px">Restore theme, colors and font to defaults</div>
+                </div>
+                <button class="btn btn-sm reset-soft-btn" data-reset="appearance">Reset</button>
+              </div>
+              <div class="reset-row">
+                <div>
+                  <div style="font-size:0.86rem;font-weight:600">Reset notifications</div>
+                  <div class="sfield-hint" style="margin-top:2px">Turn all notification settings back on</div>
+                </div>
+                <button class="btn btn-sm reset-soft-btn" data-reset="notifications">Reset</button>
+              </div>
+              <div class="reset-row">
+                <div>
+                  <div style="font-size:0.86rem;font-weight:600">Reset dashboard</div>
+                  <div class="sfield-hint" style="margin-top:2px">Clear homework, schedule and grades</div>
+                </div>
+                <button class="btn btn-sm reset-soft-btn" data-reset="dashboard">Reset</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="spanel" id="spanel-danger">
+            <div class="spanel-title" style="color:var(--danger)">⚠️ Danger Zone</div>
+            <div class="danger-zone-box">
+              <div class="dz-item">
+                <div>
+                  <div style="font-weight:700;margin-bottom:3px">Reset everything</div>
+                  <div class="sfield-hint" style="margin-top:0">Wipes ALL your data — XP, streaks, homework, grades, habits.</div>
+                </div>
+                <button class="btn btn-sm dz-btn" id="resetAllBtn">Reset All</button>
+              </div>
+              <div class="dz-item" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,71,87,0.15)">
+                <div>
+                  <div style="font-weight:700;margin-bottom:3px">Delete account</div>
+                  <div class="sfield-hint" style="margin-top:0">Permanently removes your account and all data.</div>
+                </div>
+                <button class="btn btn-sm dz-btn" id="deleteAccBtn">Delete</button>
+              </div>
+            </div>
+            <div class="confirm-box" id="confirmBox" style="display:none">
+              <div class="confirm-title" id="confirmTitle">Are you sure?</div>
+              <div class="confirm-sub" id="confirmSub">This cannot be undone.</div>
+              <div class="sfield-label" style="margin-bottom:6px;margin-top:1rem">Type <b style="color:var(--danger);font-family:Space Mono,monospace">RESET</b> to confirm</div>
+              <input type="text" id="confirmInput" placeholder="Type RESET here" style="width:100%;margin-bottom:10px" />
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-sm dz-btn" id="confirmYesBtn">Confirm</button>
+                <button class="btn btn-sm" id="confirmNoBtn" style="background:var(--bg3);color:var(--muted);border:1px solid var(--border2)">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main> <footer>Ellipod SL v1.0</footer>
+  
+  <script src="app.js"></script>
+<link rel="stylesheet" href="style.css">
+
+</body>
+</html>
