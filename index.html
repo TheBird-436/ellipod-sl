@@ -1,9 +1,13 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ellipod SL</title>
-  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Make sure your CSS file is named exactly style.css (or change this link to match) -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <div class="grid-bg"></div>
@@ -24,8 +28,7 @@
         <input class="auth-input" id="suPass" type="password" placeholder="Password (min 6 chars)" />
         <input class="auth-input" id="suPassConfirm" type="password" placeholder="Confirm password" />
         <button class="auth-btn" id="signupBtn">Create account →</button>
-        <div class="auth-small">Your data is stored locally in this browser. No cloud needed yet.
-        </div>
+        <div class="auth-small">Your data is stored locally in this browser. No cloud needed yet.</div>
       </div>
       
       <div class="auth-panel" id="panelLogin" style="display:none">
@@ -33,12 +36,8 @@
         <input class="auth-input" id="liPass" type="password" placeholder="Password" />
         <button class="auth-btn" id="loginBtn">Log In →</button>
         <div class="auth-forgot" id="forgotLink">Forgot password?</div>
-        <div class="auth-small">No account? <span class="auth-link" id="goSignup">Sign up free</span>
-          
-        </div>
-        <div class="auth-small" style="margin-top:6px">New device? <span class="auth-link" id="goTransfer">Transfer account →</span>
-          
-        </div>
+        <div class="auth-small">No account? <span class="auth-link" id="goSignup">Sign up free</span></div>
+        <div class="auth-small" style="margin-top:6px">New device? <span class="auth-link" id="goTransfer">Transfer account →</span></div>
       </div>
       
       <div class="auth-panel" id="panelForgot" style="display:none">
@@ -47,33 +46,24 @@
         </div>
         <input class="auth-input" id="forgotEmail" type="email" placeholder="Your email address" />
         <button class="auth-btn" id="forgotBtn">Send reset link →</button>
-        <div class="auth-small"><span class="auth-link" id="backToLogin">← Back to login</span>
-          
-        </div>
+        <div class="auth-small"><span class="auth-link" id="backToLogin">← Back to login</span></div>
       </div>
       
       <div class="auth-panel" id="panelTransfer" style="display:none">
         <div class="transfer-info">
-          <div style="font-size:1.5rem;margin-bottom:8px">📦
-          </div>
-          <div style="font-size:0.86rem;font-weight:600;margin-bottom:6px">Transfer your account
-          </div>
+          <div style="font-size:1.5rem;margin-bottom:8px">📦</div>
+          <div style="font-size:0.86rem;font-weight:600;margin-bottom:6px">Transfer your account</div>
           <div style="font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:1rem">
-            Ellipod SL stores data locally in each browser. To use your account on another device,
-            export it from your original browser and import it here.
+            Ellipod SL stores data locally in each browser. To use your account on another device, export it from your original browser and import it here.
           </div>
         </div>
-        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px;text-align:left">
-          Import account file
-        </div>
+        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px;text-align:left">Import account file</div>
         <label class="import-label" id="importLabel">
           <span id="importLabelText">📂 Choose export file (.json)</span>
           <input type="file" id="importFile" accept=".json" style="display:none" />
         </label>
         <button class="auth-btn" id="importBtn" style="margin-top:4px">Import & Log In →</button>
-        <div class="auth-small" style="margin-top:8px">
-          <span class="auth-link" id="backFromTransfer">← Back to login</span>
-        </div>
+        <div class="auth-small" style="margin-top:8px"><span class="auth-link" id="backFromTransfer">← Back to login</span></div>
       </div>
 
       <div id="authError" class="auth-error" style="display:none"></div>
@@ -89,10 +79,8 @@
       <button class="nav-tab" data-page="pro">About Ellipod SL</button>
     </div>
     <div class="nav-right">
-      <div class="nav-pill pill-streak" id="navStreak">🔥 0
-      </div>
-      <div class="nav-pill pill-xp" id="navXP">⚡ 0 XP
-      </div>
+      <div class="nav-pill pill-streak" id="navStreak">🔥 0</div>
+      <div class="nav-pill pill-xp" id="navXP">⚡ 0 XP</div>
       <button class="nav-settings-btn" id="navSettingsBtn" title="Settings">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/GNOME_Settings_icon.svg/500px-GNOME_Settings_icon.svg.png" alt="Settings" class="settings-icon-img">
       </button>
@@ -263,45 +251,39 @@
     </div>
 
     <div class="page" id="page-pro">
-  <div class="pro-hero">
-    <div class="pro-hero-left">
-      <div class="pro-hero-eyebrow">by Ellipod</div>
-      <div class="pro-hero-title">About <span>Ell</span>i<span>pod</span> <span>S</span>L</div>    
-    </div>
-  </div>
-
-  <div class="pro-features-grid">
-    <!-- Card 1 -->
-    <div class="pro-card">
-      <div class="pro-card-top">
-        <div class="pro-card-icon">ℹ</div>
-        <div class="pro-badge-pill">Overview</div>
+      <div class="pro-hero">
+        <div class="pro-hero-left">
+          <div class="pro-hero-eyebrow">by Ellipod</div>
+          <div class="pro-hero-title">About <span>Ell</span>i<span>pod</span> <span>S</span>L</div>    
+        </div>
       </div>
-      <div class="pro-card-title">Ellipod SL is an educational software platform that combines essential learning tools in one intuitive environment, helping students and educators access resources and manage content. Ellipod (the company) owns Ellipod SL</div>
-    </div>
 
-    <!-- Card 2 -->
-    <div class="pro-card">
-      <div class="pro-card-top">
-        <div class="pro-card-icon">ℹ</div>
-        <div class="pro-badge-pill">Classroom</div>
+      <div class="pro-features-grid">
+        <div class="pro-card">
+          <div class="pro-card-top">
+            <div class="pro-card-icon">ℹ</div>
+            <div class="pro-badge-pill">Overview</div>
+          </div>
+          <div class="pro-card-title">Ellipod SL is an educational software platform that combines essential learning tools in one intuitive environment, helping students and educators access resources and manage content. Ellipod (the company) owns Ellipod SL</div>
+        </div>
+
+        <div class="pro-card">
+          <div class="pro-card-top">
+            <div class="pro-card-icon">ℹ</div>
+            <div class="pro-badge-pill">Classroom</div>
+          </div>
+          <div class="pro-card-title">The platform offers tools for organizing courses, sharing educational materials, and improving communication between students and educators. Its structured design simplifies learning management and creates a more efficient digital classroom experience.</div>
+        </div>
+
+        <div class="pro-card">
+          <div class="pro-card-top">
+            <div class="pro-card-icon">ℹ</div>
+            <div class="pro-badge-pill">Impact</div>
+          </div>
+          <div class="pro-card-title">By bringing educational processes into a single platform, Ellipod SL supports better collaboration, accessibility, and engagement, enabling a smoother and more effective learning experience for all users.</div>
+        </div>
       </div>
-      <div class="pro-card-title">The platform offers tools for organizing courses, sharing educational materials, and improving communication between students and educators. Its structured design simplifies learning management and creates a more efficient digital classroom experience.</div>
     </div>
-
-    <!-- Card 3 -->
-    <div class="pro-card">
-      <div class="pro-card-top">
-        <div class="pro-card-icon">ℹ</div>
-        <div class="pro-badge-pill">Impact</div>
-      </div>
-      <div class="pro-card-title">By bringing educational processes into a single platform, Ellipod SL supports better collaboration, accessibility, and engagement, enabling a smoother and more effective learning experience for all users.</div>
-    </div>
-
-    
-
-  </div>
-</div>
     
     <div class="page" id="page-settings">
       <div class="settings-layout">
@@ -422,10 +404,10 @@
             <div class="spanel-title">🔐 Account</div>
             <div class="account-user-card" id="accountUserCard">
               <div class="account-avatar-sm" id="acctAvatar">🎓</div>
-              <di class="account-info">
+              <div class="account-info">
                 <div class="account-name" id="acctName">Student</div>
                 <div class="account-email" id="acctEmail"></div>
-                </div>
+              </div>
             </div>
             <div class="sfield">
               <div class="sfield-label">Change Password</div>
@@ -525,10 +507,19 @@
       </div>
     </div>
 
-  </main> <footer>Ellipod SL v1.0</footer>
+  </main> 
+  <footer>Ellipod SL v1.0</footer>
   
   <script src="app.js"></script>
-<link rel="stylesheet" href="style.css">
+  
+  <!-- THIS IS THE MISSING SERVICE WORKER CODE -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+  </script>
 
 </body>
 </html>
